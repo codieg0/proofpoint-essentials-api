@@ -1,9 +1,18 @@
-# API_PPE
-### Bash API scripts for Proofpoint Essentials
+# Proofpoint Essentials API (Bash Scripts)
 
-You would need to install jq first
+A collection of Bash scripts to interact with the **Proofpoint Essentials** API.
+  
+These scripts are designed to help automate administrative tasks such as user management via the command line.
 
-For Ubuntu: 
+
+## Requirements
+- `curl`
+- `jq`
+- Proofpoint admin credentials
+
+
+Installation in **Ubuntu**
+
 ```bash
-sudo apt install -y jq
+sudo apt install -y curl jq
 ```
