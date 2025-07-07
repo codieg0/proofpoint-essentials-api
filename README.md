@@ -28,6 +28,7 @@ sudo apt install -y curl jq
 | `not_billable.sh`     | Sets the user as non-billable     |
 | `get_eid.sh`     | Gets the eid for an account and print login URL    |
 | `get_azure_details.sh`     | List all the Azure important details from an account    |
+| `get_sender-list`     | List the sender and blocklist of user    |
 
 ## Good info
 - [API Overview](https://us1.proofpointessentials.com/api/v1/docs/index.php)
