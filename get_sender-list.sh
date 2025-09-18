@@ -1,19 +1,33 @@
 #!/bin/bash
 
-echo
-read -p "Enter domain: " domain
-read -p "Enter stack: " stack
-read -p "Enter affected user email: " a_address
-read -p "Enter API username: " user
-read -sp "Enter API password: " password
-echo
+# Check for jq and curl dependency
+for cmd in jq curl; do
+    if ! command -v $cmd &> /dev/null; then
+        echo "❌ Error: '$cmd' is not installed. Please install it using your package manager:"
+        if [ "$cmd" = "jq" ]; then
+            echo "Ubuntu: sudo apt install -y jq"
+        elif [ "$cmd" = "curl" ]; then
+            echo "Ubuntu: sudo apt install -y curl"
+        fi
+        exit 1
+    fi
+done
 
-echo -e "\nGetting sender lists for $a_address\n"
+# Asking users for the important details
+read -p "Domain: " dm
+read -p "Stack: " stack
+read -p "Username: " us
+read -s -p "Password: " pw
 
-curl -s -H "X-User: $user" -H "X-Password: $password" \
-"https://$stack.proofpointessentials.com/api/v1/orgs/$domain/users/$a_address" | jq -r '
-  "\nSafe Senders:\n" +
-  (if .white_list_senders | length == 0 then "  (none)" else (.white_list_senders[] | "  - " + .) end) +
-  "\n\nBlocked Senders:\n" +
-  (if .black_list_senders | length == 0 then "  (none)" else (.black_list_senders[] | "  - " + .) end)
-'
+# GET Requests for each lists
+allow=$(curl -s -X GET -H "X-User: $us" -H "X-Password: $pw" \
+  "https://$stack.proofpointessentials.com/api/v1/orgs/$dm/sender-lists" | jq -r '.allow_list[]')
+
+block=$(curl -s -X GET -H "X-User: $us" -H "X-Password: $pw" \
+  "https://$stack.proofpointessentials.com/api/v1/orgs/$dm/sender-lists" | jq -r '.block_list[]')
+
+# Write combined CSV with headers
+paste -d, <(echo "$allow") <(echo "$block") | \
+  sed '1iAllow List,Block List' > safe_block_list.csv
+
+echo "✅ Output saved to safe_block_list.csv"

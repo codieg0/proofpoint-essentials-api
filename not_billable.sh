@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Check for jq and curl dependency
+for cmd in jq curl; do
+    if ! command -v $cmd &> /dev/null; then
+        echo "❌ Error: '$cmd' is not installed. Please install it using your package manager:"
+        if [ "$cmd" = "jq" ]; then
+            echo "Ubuntu: sudo apt install -y jq"
+        elif [ "$cmd" = "curl" ]; then
+            echo "Ubuntu: sudo apt install -y curl"
+        fi
+        exit 1
+    fi
+done
+
+# Asking users for the important details
 echo
 read -p "Enter domain: " domain
 read -p "Enter stack: " stack
