@@ -29,7 +29,11 @@ sudo apt install -y curl jq
 | `get_eid.sh`     | Gets the eid for an account and print login URL    |
 | `get_azure_details.sh`     | List all the Azure important details from an account    |
 | `get_sender-list`     | List the sender and blocklist of user    |
+| `get_personal-sender-list`     | Gets user's safe/block list   |
 
 ## Good info
-- [API Overview](https://us1.proofpointessentials.com/api/v1/docs/index.php)
-- [API Specification](https://us1.proofpointessentials.com/api/v1/docs/specification.php)
+- [API Overview](https://us5.proofpointessentials.com/api/v1/docs/index.php)
+- [API Specification](https://us5.proofpointessentials.com/api/v1/docs/specification.php)
+
+## Todo
+- get_functs: results to CSV
